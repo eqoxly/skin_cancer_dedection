@@ -61,3 +61,59 @@ skin_df['age'].fillna((skin_df['age'].mean()), inplace=True)
 # Tekrar kayıp veri kontrolü yapalım
 print("\n'age' sütunu doldurulduktan sonra kayıp veri durumu:")
 print(skin_df.isnull().sum())
+
+print("\n" + "="*50)
+print("ADIM 2: GÖRÜNTÜ İŞLEME VE HAZIRLIK")
+print("="*50)
+
+# Görüntüleri işlemek için kütüphaneleri ekle
+from PIL import Image
+from tqdm import tqdm
+
+# Görüntü boyutunu belirle (RTX 3060 için daha yüksek çözünürlük)
+IMAGE_SIZE = 224
+
+# Görüntüleri yeniden boyutlandırma ve NumPy dizisine çevirme
+# tqdm, işlemin ilerlemesini gösteren bir ilerleme çubuğu ekler
+tqdm.pandas(desc="Görüntüler işleniyor")
+skin_df['image_pixels'] = skin_df['path'].progress_apply(
+    lambda x: np.asarray(Image.open(x).resize((IMAGE_SIZE, IMAGE_SIZE)))
+)
+
+# Piksel değerlerini 0-1 arasına normalize et
+skin_df['image_pixels'] = skin_df['image_pixels'].apply(lambda x: x / 255.0)
+
+print("\nGörüntü işleme tamamlandı.")
+print("DataFrame'e 'image_pixels' sütunu eklendi.")
+print(f"Kullanılan görüntü boyutu: {IMAGE_SIZE}x{IMAGE_SIZE}")
+print(f"Örnek bir görüntünün şekli: {skin_df['image_pixels'][0].shape}")
+print(f"Örnek bir görüntünün veri tipi: {skin_df['image_pixels'][0].dtype}")
+print(f"Örnek bir görüntünün min/max piksel değeri: {skin_df['image_pixels'][0].min()} / {skin_df['image_pixels'][0].max()}")
+
+print("\n" + "="*50)
+print("ADIM 2: GÖRÜNTÜ İŞLEME VE HAZIRLIK")
+print("="*50)
+
+# Görüntüleri işlemek için kütüphaneleri ekle
+from PIL import Image
+from tqdm import tqdm
+
+# Görüntü boyutunu belirle
+IMAGE_WIDTH = 100
+IMAGE_HEIGHT = 75
+
+# Görüntüleri yeniden boyutlandırma ve NumPy dizisine çevirme
+# tqdm, işlemin ilerlemesini gösteren bir ilerleme çubuğu ekler
+tqdm.pandas(desc="Görüntüler işleniyor")
+skin_df['image_pixels'] = skin_df['path'].progress_apply(
+    lambda x: np.asarray(Image.open(x).resize((IMAGE_WIDTH, IMAGE_HEIGHT)))
+)
+
+# Piksel değerlerini 0-1 arasına normalize et
+skin_df['image_pixels'] = skin_df['image_pixels'].apply(lambda x: x / 255.0)
+
+print("\nGörüntü işleme tamamlandı.")
+print("DataFrame'e 'image_pixels' sütunu eklendi.")
+print(f"Örnek bir görüntünün şekli: {skin_df['image_pixels'][0].shape}")
+print(f"Örnek bir görüntünün veri tipi: {skin_df['image_pixels'][0].dtype}")
+print(f"Örnek bir görüntünün min/max piksel değeri: {skin_df['image_pixels'][0].min()} / {skin_df['image_pixels'][0].max()}")
