@@ -1,0 +1,14 @@
+# Python virtual environment
+/venv/
+
+# Environment variables
+.env
+
+# Large datasets
+/dataset/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
